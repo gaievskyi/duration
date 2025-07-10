@@ -1,0 +1,39 @@
+{
+  "name": "duration",
+  "version": "1.0.0",
+  "description": "A type-safe duration library for human-readable durations",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "format": "prettier --ignore-path .gitignore --log-level warn --write --cache src test"
+  },
+  "keywords": [],
+  "author": "Daniel Gaievskyi",
+  "license": "MIT",
+  "packageManager": "pnpm@10.13.1",
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^11.2.0",
+    "@total-typescript/ts-reset": "^0.6.1",
+    "@vitest/ui": "3.2.4",
+    "prettier": "^3.6.2",
+    "size-limit": "^11.2.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}
