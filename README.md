@@ -1,6 +1,11 @@
 # Duration
 
-Elegant, lightweight (800B gzipped) TypeScript helpers for working with time durations.
+Elegant, lightweight (800B gzipped), declarative TypeScript helpers for working with time durations.
+
+## Roadmap
+
+- [ ] Add type-safe duration string parsing (e.g. `duration("5abc")` should type-hint human-readable error)
+- [ ] Implement `Duration.decode` for retrieving durations from strings, e.g. `Duration.decode("5 minutes")`
 
 ## Installation
 
@@ -16,6 +21,14 @@ bun add duration
 ```
 
 ## Usage
+
+### Function invocation
+
+```typescript
+import duration from "duration"
+
+const interval = duration("30s")
+```
 
 ### Template Literal
 
@@ -34,6 +47,13 @@ import { Duration } from "duration"
 
 const delay = Duration.minutes(5)
 const timeout = Duration.seconds(30)
+```
+
+### Decoding from strings (Coming soon)
+
+```typescript
+import { Duration } from "duration"
+const duration = Duration.decode("5 minutes")
 ```
 
 ### Arithmetic Operations
@@ -65,15 +85,6 @@ oneHour.hours // 1
 oneHour.days // 0.041666...
 ```
 
-### String Representation
-
-```typescript
-duration`500ms`.toString() // "500ms"
-duration`30s`.toString() // "30s"
-duration`5m`.toString() // "5m"
-duration`2h`.toString() // "2h"
-```
-
 ## Supported Units
 
 - `ms` - milliseconds
@@ -84,22 +95,26 @@ duration`2h`.toString() // "2h"
 - `w` - weeks
 - `y` - years
 
-## Real-world Examples
+## Examples
 
 ```typescript
-// Replace unreadable calculations
-const oldWay = 60 * 60 * 1000 * 8
-const newWay = duration`8h`
+import duration from "duration"
 
-// Timeouts and delays
+// Replace unreadable calculations
+const oldBoringWay = 60 * 60 * 1000 * 8
+// with declarative duration
+const newElegantWay = duration`8h`
+
+// Timeouts and intervals
 setTimeout(() => {}, duration`5s`)
+setInterval(() => {}, duration`30s`)
 
 // Cache expiration
 const TTL = duration`1h`
 const isExpired = Date.now() > timestamp + TTL
 
 // Throttling
-const windowSize = duration`1m`
+const windowSize = duration`1s`
 const cooldown = duration`5s`
 ```
 

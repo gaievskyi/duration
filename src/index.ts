@@ -164,14 +164,23 @@ function parseDuration(durationStr: string): Duration {
   return new Duration(milliseconds)
 }
 
-function duration(strings: TemplateStringsArray, ...values: any[]): Duration {
-  if (strings.length !== 1 || values.length !== 0) {
+function duration(strings: TemplateStringsArray, ...values: unknown[]): Duration
+function duration(durationStr: string): Duration
+function duration(
+  stringsOrDurationStr: TemplateStringsArray | string,
+  ...values: unknown[]
+): Duration {
+  if (typeof stringsOrDurationStr === "string") {
+    return parseDuration(stringsOrDurationStr)
+  }
+
+  if (stringsOrDurationStr.length !== 1 || values.length !== 0) {
     throw new Error(
       "Duration template literal must contain only a single string without interpolation",
     )
   }
 
-  return parseDuration(strings[0])
+  return parseDuration(stringsOrDurationStr[0])
 }
 
 export { duration, Duration, type DurationValue, type DurationUnit }
