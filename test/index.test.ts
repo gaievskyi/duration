@@ -121,52 +121,6 @@ describe("Duration", () => {
     })
   })
 
-  describe("Arithmetic Operations", () => {
-    it("should add durations correctly", () => {
-      const result = duration`5m`.add(duration`30s`)
-      expect(result.seconds).toBe(330)
-    })
-
-    it("should subtract durations correctly", () => {
-      const result = duration`1h`.subtract(duration`30m`)
-      expect(result.minutes).toBe(30)
-    })
-
-    it("should multiply duration correctly", () => {
-      const result = duration`30m`.multiply(2)
-      expect(result.hours).toBe(1)
-    })
-
-    it("should divide duration correctly", () => {
-      const result = duration`1h`.divide(2)
-      expect(result.minutes).toBe(30)
-    })
-
-    it("should handle chained operations", () => {
-      const result = duration`1h`.add(duration`30m`).multiply(2)
-      expect(result.hours).toBe(3)
-    })
-  })
-
-  describe("Comparison Operations", () => {
-    it("should compare equality correctly", () => {
-      expect(duration`1h`.equals(duration`60m`)).toBe(true)
-      expect(duration`1h`.equals(duration`30m`)).toBe(false)
-    })
-
-    it("should compare greater than correctly", () => {
-      expect(duration`1h`.greaterThan(duration`30m`)).toBe(true)
-      expect(duration`30m`.greaterThan(duration`1h`)).toBe(false)
-      expect(duration`1h`.greaterThan(duration`1h`)).toBe(false)
-    })
-
-    it("should compare less than correctly", () => {
-      expect(duration`30m`.lessThan(duration`1h`)).toBe(true)
-      expect(duration`1h`.lessThan(duration`30m`)).toBe(false)
-      expect(duration`1h`.lessThan(duration`1h`)).toBe(false)
-    })
-  })
-
   describe("String Representation", () => {
     it("should display milliseconds for small values", () => {
       expect(duration`500ms`.toString()).toBe("500ms")
@@ -270,29 +224,6 @@ describe("Duration", () => {
       expect(duration.hours).toBe(1.5)
       expect(duration.minutes).toBe(90)
     })
-
-    it("should work with arithmetic operations", () => {
-      const duration1 = Duration.minutes(5)
-      const duration2 = Duration.seconds(30)
-      const result = duration1.add(duration2)
-      expect(result.seconds).toBe(330)
-    })
-
-    it("should work with comparison operations", () => {
-      const duration1 = Duration.hours(1)
-      const duration2 = Duration.minutes(60)
-      expect(duration1.equals(duration2)).toBe(true)
-    })
-
-    it("should be equivalent to template literals", () => {
-      expect(Duration.ms(500).equals(duration`500ms`)).toBe(true)
-      expect(Duration.seconds(30).equals(duration`30s`)).toBe(true)
-      expect(Duration.minutes(5).equals(duration`5m`)).toBe(true)
-      expect(Duration.hours(2).equals(duration`2h`)).toBe(true)
-      expect(Duration.days(1).equals(duration`1d`)).toBe(true)
-      expect(Duration.weeks(1).equals(duration`1w`)).toBe(true)
-      expect(Duration.years(1).equals(duration`1y`)).toBe(true)
-    })
   })
 
   describe("Real-world Use Cases", () => {
@@ -308,18 +239,6 @@ describe("Duration", () => {
       expect(timeout.milliseconds).toBe(30000)
       expect(start + timeout.valueOf()).toBeGreaterThan(start)
     })
-
-    it("should handle cache expiration", () => {
-      const cacheTime = duration`1h`
-      const maxAge = duration`24h`
-      expect(maxAge.greaterThan(cacheTime)).toBe(true)
-    })
-
-    it("should handle rate limiting", () => {
-      const windowSize = duration`1m`
-      const cooldown = duration`5s`
-      expect(windowSize.subtract(cooldown).seconds).toBe(55)
-    })
   })
 
   describe("Edge Cases", () => {
@@ -333,14 +252,12 @@ describe("Duration", () => {
       expect(_duration.milliseconds).toBe(1)
     })
 
-    it("should handle operations resulting in zero", () => {
-      const _duration = duration`5m`.subtract(duration`5m`)
-      expect(_duration.milliseconds).toBe(0)
+    it("throws error for NaN values", () => {
+      expect(() => duration`NaN`).toThrow("Invalid duration format")
     })
 
-    it("should handle operations resulting in negative values", () => {
-      const _duration = duration`1m`.subtract(duration`2m`)
-      expect(_duration.milliseconds).toBe(-60000)
+    it("throws error for Infinity values", () => {
+      expect(() => duration`Infinity`).toThrow("Invalid duration format")
     })
   })
 })

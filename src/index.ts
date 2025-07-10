@@ -106,34 +106,6 @@ class Duration implements DurationValue {
       return `${this.#_ms / (365 * 24 * 60 * 60 * 1000)}y`
     }
   }
-
-  public add(other: DurationValue): Duration {
-    return new Duration(this.#_ms + other.valueOf())
-  }
-
-  public subtract(other: DurationValue): Duration {
-    return new Duration(this.#_ms - other.valueOf())
-  }
-
-  public multiply(factor: number): Duration {
-    return new Duration(this.#_ms * factor)
-  }
-
-  public divide(divisor: number): Duration {
-    return new Duration(this.#_ms / divisor)
-  }
-
-  public equals(other: DurationValue): boolean {
-    return this.#_ms === other.valueOf()
-  }
-
-  public greaterThan(other: DurationValue): boolean {
-    return this.#_ms > other.valueOf()
-  }
-
-  public lessThan(other: DurationValue): boolean {
-    return this.#_ms < other.valueOf()
-  }
 }
 
 function parseDuration(durationStr: string): Duration {
